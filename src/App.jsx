@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp, LayoutTemplate, List, Image } from 'lucide-react';
+import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp, List, Image, Layout, ShoppingCart, LayoutTemplate } from 'lucide-react';
 
-// --- 自定义图标组件 ---
+// --- 自定义图标组件 (防止报错) ---
 const Torii = ({ className, size = 16 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} width={size} height={size}>
     <path d="M4 4h16"/><path d="M4 8h16"/><path d="M5 4v18"/><path d="M19 4v18"/><path d="M5 8l-2 2"/><path d="M19 8l2 2"/>
@@ -12,7 +12,7 @@ const ItineraryApp = () => {
   const [activeTab, setActiveTab] = useState('itinerary'); 
   const [selectedDay, setSelectedDay] = useState('day1');
   const [checklistTab, setChecklistTab] = useState('jrpass');
-  const [layoutMode, setLayoutMode] = useState('timeline'); // 'timeline', 'list', 'magazine'
+  const [layoutMode, setLayoutMode] = useState('card'); 
   const scrollContainerRef = useRef(null);
 
   // 滚动到顶部
@@ -21,6 +21,12 @@ const ItineraryApp = () => {
       scrollContainerRef.current.scrollTop = 0;
     }
   }, [selectedDay, activeTab, layoutMode]);
+
+  const toggleLayout = () => {
+    const modes = ['card', 'list', 'magazine'];
+    const nextIndex = (modes.indexOf(layoutMode) + 1) % modes.length;
+    setLayoutMode(modes[nextIndex]);
+  };
 
   // --- 手绘地图组件 ---
   const HandDrawnMap = ({ day }) => {
@@ -86,8 +92,10 @@ const ItineraryApp = () => {
                   </svg>
                   <LocationLabel x="50%" y="15%" icon={Camera} label="生田神社/北野" color="bg-emerald-100" textColor="text-emerald-800" />
                   <LocationLabel x="50%" y="40%" icon={Train} label="JR 三宫站" color="bg-stone-100" />
+                  <LocationLabel x="85%" y="40%" icon={ShoppingCart} label="Hankyu超市" color="bg-orange-100" textColor="text-orange-800" />
                   <LocationLabel x="50%" y="65%" icon={Utensils} label="中华街午餐" color="bg-red-100" textColor="text-red-800" />
                   <LocationLabel x="50%" y="85%" icon={ShoppingBag} label="旧居留地 (潮牌)" color="bg-purple-100" textColor="text-purple-800" />
+                  <LocationLabel x="85%" y="85%" icon={Anchor} label="神户塔" color="bg-blue-100" textColor="text-blue-800" />
                   <TransportLabel x="30%" y="55%" text="City Walk" rotate={90} color="text-stone-400" />
                 </>
             );
@@ -95,7 +103,7 @@ const ItineraryApp = () => {
                 <>
                   <svg className="absolute inset-0 w-full h-full" overflow="visible">
                     {/* 神户 -> 广岛 */}
-                    <path d="M 280 180 C 200 180, 150 120, 40 100" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="0" strokeLinecap="round" />
+                    <path d="M 280 180 C 200 180, 150 120, 80 100" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="0" strokeLinecap="round" />
                     {/* 广岛 -> 宫岛 */}
                     <path d="M 80 100 L 20 60" fill="none" stroke="#f59e0b" strokeWidth="3" />
                     
@@ -154,6 +162,7 @@ const ItineraryApp = () => {
       title: '抵达神户',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-orange-500 to-red-500',
+      color: 'bg-orange-50 border-orange-100', // 新增 color 属性用于 List 模式
       events: [
         { time: '16:40', icon: Plane, title: '航班落地 JL0894', desc: '关西 KIX T1 抵达', tag: '交通', tagColor: 'blue' },
         { time: '18:00', icon: Bus, title: '机场大巴 (直达)', desc: 'T1 1F 6号站台 | 约65分 | ¥2200', tag: '交通', tagColor: 'blue' },
@@ -168,6 +177,7 @@ const ItineraryApp = () => {
       title: '六甲山 & 有马',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-cyan-500 to-blue-500',
+      color: 'bg-cyan-50 border-cyan-100',
       events: [
         { time: '09:30', icon: Bus, title: '上山交通', desc: '16路巴士 → 六甲缆车 → 山上巴士', tag: '交通', tagColor: 'blue' },
         { time: '11:00', icon: Sun, title: '六甲山雪乐园', desc: 'Snow Land 玩雪盆 (2小时)\n*记得带上备用干袜子！', tag: '游玩', tagColor: 'emerald' },
@@ -183,22 +193,25 @@ const ItineraryApp = () => {
       title: 'City Walk & 购物',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-purple-500 to-pink-500',
+      color: 'bg-purple-50 border-purple-100',
       events: [
         { time: '09:00', icon: Camera, title: '生田神社', desc: '酒店后方。恋爱/安产守护神。', tag: '游玩', tagColor: 'emerald' },
         { time: '10:00', icon: Coffee, title: '北野异人馆', desc: '步行上坡。打卡百年星巴克。', tag: '打卡', tagColor: 'pink' },
-        { time: '11:00', icon: ShoppingBag, title: '车站杂货区', desc: 'Bookoff (二手), Daiso, 3COINS', tag: '购物', tagColor: 'purple' },
+        { time: '11:00', icon: ShoppingBag, title: '车站杂货区', desc: 'Bookoff (二手), Daiso, 3COINS, Montbell。\n买完先把东西放回酒店。', tag: '购物', tagColor: 'purple' },
         { time: '12:30', icon: Utensils, title: '午餐：中华街', desc: '南京町。老祥记包子、神户牛拉面。', tag: '用餐', tagColor: 'rose' },
         { time: '14:00', icon: Shirt, title: '潮牌核心区', desc: '旧居留地: Bshop, nanamica, TNF', tag: '购物', tagColor: 'purple' },
         { time: '16:30', icon: Anchor, title: '神户塔 & Meriken Park', desc: '从旧居留地步行 10 分钟即达海边。\n登塔看夕阳，拍 BE KOBE。', tag: '游玩', tagColor: 'emerald' },
-        { time: '19:00', icon: Utensils, title: '晚餐：Grill Ippei', desc: '神户老字号洋食。必点半熟炸牛排。', tag: '用餐', tagColor: 'rose' }
+        { time: '18:00', icon: Store, title: '大型超市扫货', desc: '推荐：Hankyu Oasis (神户阪急B1) 或 AEON Food Style。\n买油盐酱醋、零食。直接拎回酒店(很近)。', tag: '生活', tagColor: 'orange' },
+        { time: '19:30', icon: Utensils, title: '晚餐：Grill Ippei', desc: '神户老字号洋食。必点半熟炸牛排。', tag: '用餐', tagColor: 'rose' }
       ]
     },
     day4: {
       date: '2/18',
       weekday: '周三',
-      title: '广岛 & 宫岛一日游',
+      title: '广岛双遗',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-blue-600 to-indigo-600',
+      color: 'bg-blue-50 border-blue-100',
       events: [
         { time: '08:00', icon: Train, title: '前往新神户站', desc: '地铁西神・山手线 (1站, 2分钟) → 新神户', tag: '交通', tagColor: 'blue' },
         { time: '08:30', icon: Train, title: '新干线 (Nozomi)', desc: '新神户 → 广岛 (70分) [JR Pass]', tag: '交通', tagColor: 'blue' },
@@ -215,6 +228,7 @@ const ItineraryApp = () => {
       title: '姬路城 & 移动',
       stay: '关西机场日航酒店 (Hotel Nikko)',
       themeColor: 'from-stone-500 to-stone-700',
+      color: 'bg-stone-50 border-stone-200',
       events: [
         { time: '09:00', icon: CheckSquare, title: '退房 & 存行李', desc: '【关键】3个大箱子寄存在酒店前台 (免费)。', tag: '提示', tagColor: 'orange' },
         { time: '09:30', icon: Train, title: '前往姬路', desc: '新神户坐【新干线】直达姬路 (15分钟)。\n★姬路城游览耗时约 2.5 小时，爬楼梯需体力。', tag: '交通', tagColor: 'blue' },
@@ -234,6 +248,7 @@ const ItineraryApp = () => {
       title: '平安回家',
       stay: '温馨的家',
       themeColor: 'from-emerald-500 to-teal-500',
+      color: 'bg-green-50 border-green-100',
       events: [
         { time: '07:30', icon: Coffee, title: '起床退房', desc: '住在机场里就是爽，多睡会儿。', tag: '住宿', tagColor: 'orange' },
         { time: '08:00', icon: CheckSquare, title: '值机', desc: '推行李步行3分钟到柜台。JL0891 (09:15起飞)。', tag: '交通', tagColor: 'blue' },
@@ -327,6 +342,7 @@ const ItineraryApp = () => {
     { name: '金子眼镜', tags: ['大丸6F', '眼镜'], note: '在大丸百货楼上。' },
     { name: '3COINS / Daiso', tags: ['车站', '杂货'], note: '地下街或商店街。' },
     { name: 'Bookoff', tags: ['Center Plaza', '二手'], note: 'Center Plaza 2F/3F。' },
+    { name: 'Hankyu Oasis', tags: ['生活超市', '油盐酱醋'], note: '神户阪急B1。买调料首选。' },
   ];
 
   const hotelBookings = [
@@ -344,6 +360,14 @@ const ItineraryApp = () => {
     { item: '手机流量卡 (亿点原生)', status: '未准备', note: '7天10G。' },
     { item: '浦东接送机', status: '未准备', note: '预约。' },
     { item: 'VJW 入境码', status: '未准备', note: 'Visit Japan Web。' },
+  ];
+
+  const packingList = [
+    { category: '重要证件', items: ['护照 (6个月以上有效期)', '机票行程单 (打印)', '酒店确认单 (日语/英语)', '现金 (3-5万日元)', '信用卡 (Visa/Master)', 'ICOCA/Suica卡 (苹果钱包)'] },
+    { category: '电子产品', items: ['手机 & 充电器', '充电宝 (随身带)', '转换插头 (日本两扁孔)', '流量卡 / eSIM', '孩子iPad/耳机'] },
+    { category: '衣物 (2月神户)', items: ['羽绒服 (防风)', '保暖内衣 (Uniqlo Heattech)', '厚袜子 (多带几双)', '舒适走路鞋', '围巾/手套/帽子'] },
+    { category: '亲子/生活', items: ['牙刷牙膏 (日本酒店有时不提供)', '个人护肤品 (小样)', '常备药 (感冒/肠胃/创可贴)', '折叠伞', '大号购物袋 (装战利品)'] },
+    { category: '超市扫货', items: ['气泡纸 (包酱油/醋)', '密封袋 (防漏)', '折叠手提袋 (超市用)'] }
   ];
 
   const jrPassInfo = {
@@ -414,6 +438,55 @@ const ItineraryApp = () => {
   const renderDayView = () => {
     const data = itineraryData[selectedDay];
     
+    // 确保数据存在
+    if (!data) return null;
+
+    // --- 视图模式渲染逻辑 ---
+    if (layoutMode === 'list') {
+        const borderColor = data.color ? data.color.replace('bg-', 'border-l-').split(' ')[0] : 'border-gray-200';
+        return (
+             <div className="space-y-4 pb-24 animate-fade-in-up">
+                 <div className={`p-4 rounded-xl border-l-4 ${borderColor} bg-white shadow-sm`}>
+                    <h2 className="text-xl font-bold">{data.title}</h2>
+                    <p className="text-xs text-gray-500">{data.date}</p>
+                 </div>
+                 <div className="space-y-2">
+                     {data.events.map((ev, i) => (
+                         <div key={i} className="flex items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                             <span className="font-mono text-xs font-bold w-12 text-gray-400">{ev.time}</span>
+                             <div className="flex-1 ml-2">
+                                 <div className="font-bold text-sm text-gray-800">{ev.title}</div>
+                             </div>
+                         </div>
+                     ))}
+                 </div>
+             </div>
+        )
+    }
+
+    if (layoutMode === 'magazine') {
+        return (
+             <div className="space-y-8 pb-24 animate-fade-in-up">
+                 <div className={`aspect-video rounded-3xl shadow-xl flex items-end p-6 bg-gradient-to-br ${data.themeColor} text-white`}>
+                    <div>
+                        <h1 className="text-4xl font-black mb-2">{data.title}</h1>
+                        <p className="opacity-80">{data.date} • {data.stay}</p>
+                    </div>
+                 </div>
+                 <div className="space-y-8 px-2">
+                     {data.events.map((ev, i) => (
+                         <div key={i} className="flex flex-col gap-2">
+                             <span className="text-2xl font-black text-gray-200">{ev.time}</span>
+                             <h3 className="text-xl font-bold text-gray-800">{ev.title}</h3>
+                             <p className="text-gray-500 leading-relaxed">{ev.desc}</p>
+                         </div>
+                     ))}
+                 </div>
+             </div>
+        )
+    }
+
+    // 默认 Timeline 模式
     return (
       <div className="space-y-6 pb-24 animate-fade-in-up">
         {/* 顶部大卡片 */}
@@ -448,7 +521,6 @@ const ItineraryApp = () => {
           <div className="absolute left-[23px] top-4 bottom-8 w-0.5 bg-gray-200"></div>
 
           {data.events.map((event, index) => {
-            // 标签颜色映射
             const tagColors = {
               blue: 'bg-blue-100 text-blue-700',
               orange: 'bg-orange-100 text-orange-700',
@@ -471,11 +543,8 @@ const ItineraryApp = () => {
                 <div className="flex-1 ml-6">
                   <div className="flex items-baseline mb-1">
                     <span className="text-xs font-bold text-gray-400 w-10 shrink-0">{event.time}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 ${tagClass}`}>
-                      {event.tag}
-                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 ${tagClass}`}>{event.tag}</span>
                   </div>
-                  
                   <div className={`p-4 rounded-2xl border transition-all ${event.highlight ? 'bg-white border-indigo-100 shadow-lg shadow-indigo-100/50' : 'bg-white border-gray-100 shadow-sm'}`}>
                     <div className="flex items-start gap-3">
                       <div className={`p-2 rounded-xl shrink-0 ${event.highlight ? 'bg-indigo-50 text-indigo-600' : 'bg-gray-50 text-gray-500'}`}>
@@ -483,7 +552,7 @@ const ItineraryApp = () => {
                       </div>
                       <div>
                         <h3 className={`font-bold text-base mb-1 ${event.highlight ? 'text-gray-900' : 'text-gray-700'}`}>{event.title}</h3>
-                        <p className="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{event.desc}</p>
+                        <p className="text-xs text-gray-500 leading-relaxed">{event.desc}</p>
                       </div>
                     </div>
                   </div>
@@ -579,7 +648,7 @@ const ItineraryApp = () => {
            </div>
         )}
         
-        {checklistTab === 'hotel' && (
+        {checklistTab === 'hotels' && (
            <div className="space-y-4 animate-fade-in-up">
               {hotelBookings.map((h, i) => (
                  <div key={i} className={`p-5 rounded-2xl border-2 ${h.warn ? 'border-red-100 bg-red-50/50' : h.highlight ? 'border-orange-200 bg-white' : 'border-gray-100 bg-white'}`}>
@@ -629,7 +698,14 @@ const ItineraryApp = () => {
                 <p className="text-xs font-bold text-gray-400 tracking-widest uppercase mb-0.5">TRIP TO KOBE</p>
                 <h1 className="text-xl font-black text-gray-900">春节亲子游</h1>
             </div>
-            <div className="bg-gray-100 px-2 py-1 rounded-lg text-[10px] font-bold text-gray-500">2月15-20日</div>
+            <div className="flex items-center gap-2">
+                 <button onClick={toggleLayout} className="bg-gray-100 p-2 rounded-full text-gray-600 hover:bg-gray-200 transition-colors" title="切换布局">
+                    {layoutMode === 'card' && <LayoutTemplate size={16} />}
+                    {layoutMode === 'list' && <List size={16} />}
+                    {layoutMode === 'magazine' && <Image size={16} />}
+                 </button>
+                 <div className="bg-gray-100 px-2 py-1 rounded-lg text-[10px] font-bold text-gray-500">2月15-20日</div>
+            </div>
         </div>
         {(activeTab === 'itinerary' || activeTab === 'transport') && (
             <div className="flex overflow-x-auto hide-scrollbar px-5 pb-3 gap-3">
