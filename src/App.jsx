@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp } from 'lucide-react';
+import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp, LayoutTemplate, List, Image } from 'lucide-react';
 
 // --- 自定义图标组件 ---
 const Torii = ({ className, size = 16 }) => (
@@ -11,7 +11,8 @@ const Torii = ({ className, size = 16 }) => (
 const ItineraryApp = () => {
   const [activeTab, setActiveTab] = useState('itinerary'); 
   const [selectedDay, setSelectedDay] = useState('day1');
-  const [checklistTab, setChecklistTab] = useState('jrpass'); 
+  const [checklistTab, setChecklistTab] = useState('jrpass');
+  const [layoutMode, setLayoutMode] = useState('timeline'); // 'timeline', 'list', 'magazine'
   const scrollContainerRef = useRef(null);
 
   // 滚动到顶部
@@ -19,7 +20,7 @@ const ItineraryApp = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
-  }, [selectedDay, activeTab]);
+  }, [selectedDay, activeTab, layoutMode]);
 
   // --- 手绘地图组件 ---
   const HandDrawnMap = ({ day }) => {
@@ -87,7 +88,6 @@ const ItineraryApp = () => {
                   <LocationLabel x="50%" y="40%" icon={Train} label="JR 三宫站" color="bg-stone-100" />
                   <LocationLabel x="50%" y="65%" icon={Utensils} label="中华街午餐" color="bg-red-100" textColor="text-red-800" />
                   <LocationLabel x="50%" y="85%" icon={ShoppingBag} label="旧居留地 (潮牌)" color="bg-purple-100" textColor="text-purple-800" />
-                  <LocationLabel x="80%" y="85%" icon={Anchor} label="神户塔" color="bg-blue-100" textColor="text-blue-800" />
                   <TransportLabel x="30%" y="55%" text="City Walk" rotate={90} color="text-stone-400" />
                 </>
             );
@@ -95,7 +95,7 @@ const ItineraryApp = () => {
                 <>
                   <svg className="absolute inset-0 w-full h-full" overflow="visible">
                     {/* 神户 -> 广岛 */}
-                    <path d="M 280 180 C 200 180, 150 120, 80 100" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="0" strokeLinecap="round" />
+                    <path d="M 280 180 C 200 180, 150 120, 40 100" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="0" strokeLinecap="round" />
                     {/* 广岛 -> 宫岛 */}
                     <path d="M 80 100 L 20 60" fill="none" stroke="#f59e0b" strokeWidth="3" />
                     
@@ -149,7 +149,8 @@ const ItineraryApp = () => {
   // --- 数据 ---
   const itineraryData = {
     day1: {
-      date: '2/15 (周日)',
+      date: '2/15',
+      weekday: '周日',
       title: '抵达神户',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-orange-500 to-red-500',
@@ -162,7 +163,8 @@ const ItineraryApp = () => {
       ]
     },
     day2: {
-      date: '2/16 (周一)',
+      date: '2/16',
+      weekday: '周一',
       title: '六甲山 & 有马',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-cyan-500 to-blue-500',
@@ -176,7 +178,8 @@ const ItineraryApp = () => {
       ]
     },
     day3: {
-      date: '2/17 (周二)',
+      date: '2/17',
+      weekday: '周二',
       title: 'City Walk & 购物',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-purple-500 to-pink-500',
@@ -191,7 +194,8 @@ const ItineraryApp = () => {
       ]
     },
     day4: {
-      date: '2/18 (周三)',
+      date: '2/18',
+      weekday: '周三',
       title: '广岛 & 宫岛一日游',
       stay: 'Daiwa Roynet 神户三宫PREMIER',
       themeColor: 'from-blue-600 to-indigo-600',
@@ -201,12 +205,13 @@ const ItineraryApp = () => {
         { time: '10:00', icon: Ship, title: '宫岛 (严岛神社)', desc: 'JR山阳本线(28分) -> 宫岛口 -> JR渡轮(10分)。\n★必看：海中大鸟居、喂小鹿、商店街。', tag: '必游', tagColor: 'red' },
         { time: '13:00', icon: Utensils, title: '午餐：广岛烧/牡蛎', desc: '宫岛口或广岛站吃。', tag: '用餐', tagColor: 'rose' },
         { time: '14:30', icon: Landmark, title: '原爆圆顶 & 纸鹤塔', desc: '广岛站坐路面电车(2/6号)直达。\n1. 原爆圆顶馆 (世界遗产)\n2. 纸鹤塔 (Orizuru Tower): 顶楼看全景，折纸鹤投入玻璃墙。', tag: '必游', tagColor: 'emerald' },
-        { time: '17:30', icon: Train, title: '新干线返程', desc: '广岛 → 新神户 [JR Pass]。\n注意：不去神户塔了，前一天已去。', tag: '交通', tagColor: 'blue' },
+        { time: '17:30', icon: Train, title: '新干线返程', desc: '广岛 → 新神户 [JR Pass]。', tag: '交通', tagColor: 'blue' },
         { time: '19:30', icon: Utensils, title: '晚餐：Mori Mori 寿司', desc: '三宫OPA 2店。金泽人气回转寿司。', tag: '用餐', tagColor: 'rose' }
       ]
     },
     day5: {
-      date: '2/19 (周四)',
+      date: '2/19',
+      weekday: '周四',
       title: '姬路城 & 移动',
       stay: '关西机场日航酒店 (Hotel Nikko)',
       themeColor: 'from-stone-500 to-stone-700',
@@ -224,7 +229,8 @@ const ItineraryApp = () => {
       ]
     },
     day6: {
-      date: '2/20 (周五)',
+      date: '2/20',
+      weekday: '周五',
       title: '平安回家',
       stay: '温馨的家',
       themeColor: 'from-emerald-500 to-teal-500',
@@ -433,6 +439,9 @@ const ItineraryApp = () => {
           </div>
         </div>
 
+        {/* 手绘地图 */}
+        {data.events.length > 3 && <HandDrawnMap day={selectedDay} />}
+
         {/* 时间轴列表 */}
         <div className="space-y-0 relative px-2">
           {/* 左侧贯穿线 */}
@@ -474,7 +483,7 @@ const ItineraryApp = () => {
                       </div>
                       <div>
                         <h3 className={`font-bold text-base mb-1 ${event.highlight ? 'text-gray-900' : 'text-gray-700'}`}>{event.title}</h3>
-                        <p className="text-xs text-gray-500 leading-relaxed">{event.desc}</p>
+                        <p className="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{event.desc}</p>
                       </div>
                     </div>
                   </div>
