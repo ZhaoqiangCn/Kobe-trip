@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp, LayoutList, List, Image, Layout, ShoppingCart, LayoutTemplate, Bike, Home, ArrowLeft, Info } from 'lucide-react';
+import { Calendar, MapPin, Clock, ShoppingBag, CheckSquare, Coffee, Plane, Train, Bus, AlertCircle, Ship, Sun, Ticket, Utensils, Camera, ArrowUp, Flag, Anchor, Mountain, Waves, Footprints, User, Briefcase, CreditCard, Smartphone, Shirt, Smile, ChevronRight, BedDouble, AlertTriangle, Wifi, Car, Globe, Star, Flame, Flower, Fish, Trees, Castle, Zap, Trophy, Moon, Gamepad2, FerrisWheel, BookOpen, Glasses, Coins, Store, Palmtree, Search, Landmark, ArrowRight, ThumbsUp, LayoutList, List, Image, Layout, ShoppingCart, LayoutTemplate, Bike, Home, ArrowLeft, Info, Snowflake, AlertOctagon } from 'lucide-react';
 
 // --- 1. 基础组件与图标定义 ---
 
@@ -28,85 +28,270 @@ const TransportLabel = ({ x, y, text, rotate = 0, color = "text-stone-500" }) =>
   </div>
 );
 
-// --- 2. 宫岛深度指南组件 ---
+// --- 2. 深度指南组件群 ---
+
+// 2.1 宫岛指南 (保持详细标准)
 const MiyajimaGuide = ({ onBack }) => {
+  const [activeTab, setActiveTab] = useState('route');
+
   return (
-    <div className="pb-24 animate-fade-in-up">
-      <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100 px-4 py-4 flex items-center">
-        <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-stone-100 text-stone-600">
-          <ArrowLeft size={24} />
-        </button>
-        <h2 className="text-lg font-bold text-stone-800 ml-2">宫岛深度游玩指南</h2>
+    <div className="pb-24 animate-fade-in-up bg-stone-50 min-h-screen">
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200 px-4 pt-4 pb-2 shadow-sm">
+        <div className="flex items-center mb-3">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-stone-100 text-stone-600 transition-colors"><ArrowLeft size={24} /></button>
+          <h2 className="text-lg font-bold text-stone-800 ml-2">宫岛深度指南</h2>
+        </div>
+        <div className="flex space-x-2">
+          <button onClick={() => setActiveTab('route')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'route' ? 'bg-stone-800 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>🗺️ 路线与时间</button>
+          <button onClick={() => setActiveTab('food')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'food' ? 'bg-orange-500 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>🍲 必吃美食</button>
+          <button onClick={() => setActiveTab('tips')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'tips' ? 'bg-blue-600 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>💡 避坑Tips</button>
+        </div>
       </div>
 
-      <div className="p-5 space-y-6">
-        <div className="relative h-48 rounded-2xl bg-gradient-to-r from-orange-400 to-red-500 overflow-hidden shadow-lg flex items-center justify-center text-white">
-           <Torii size={80} className="opacity-20 absolute -right-4 -bottom-4" />
-           <div className="text-center z-10">
-             <h1 className="text-3xl font-black mb-1">神之岛</h1>
-             <p className="text-sm font-medium opacity-90">世界遗产 · 日本三景</p>
-           </div>
-        </div>
+      <div className="p-4 space-y-6 max-w-2xl mx-auto">
+        {activeTab === 'route' && (
+          <div className="space-y-6 animate-fade-in">
+             <div className="relative h-40 rounded-3xl bg-gradient-to-br from-stone-700 to-stone-900 overflow-hidden shadow-lg flex flex-col items-center justify-center text-white p-6">
+                <Clock size={80} className="opacity-10 absolute -right-6 -bottom-6 rotate-12" />
+                <h1 className="text-2xl font-black mb-1 tracking-tight">2月16日 (Day 2)</h1>
+                <p className="text-xs opacity-80">建议游玩时长：3 - 4 小时</p>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="font-bold text-stone-800 mb-4 flex items-center"><Clock size={18} className="mr-2 text-stone-400"/> 建议时间表</h3>
+                <div className="space-y-4 relative pl-2">
+                   <div className="absolute left-[5.5px] top-2 bottom-2 w-0.5 bg-stone-100"></div>
+                   {[
+                     { time: '09:45', title: '抵达 JR 宫岛口站', desc: '出站跟着人流走5分钟到码头。' },
+                     { time: '10:00', title: '坐 JR 渡轮', desc: '务必抢【右侧】位置拍照！' },
+                     { time: '10:15', title: '抵达宫岛', desc: '沿海边步行，小心鹿。' },
+                     { time: '10:45', title: '严岛神社参拜', desc: '大鸟居拍照 (退潮可走近)。' },
+                     { time: '11:45', title: '千叠阁 / 五重塔', desc: '不想爬楼梯可略过。' },
+                     { time: '12:15', title: '表参道午餐', desc: '吃烤牡蛎、炸馒头。' },
+                     { time: '13:30', title: '离岛', desc: '前往广岛市区 (原爆圆顶)。' },
+                   ].map((item, i) => (
+                     <div key={i} className="flex gap-4 relative">
+                        <div className="w-3 h-3 rounded-full bg-stone-300 border-2 border-white z-10 shrink-0 mt-1.5"></div>
+                        <div className="flex-1"><div className="flex justify-between items-baseline"><span className="font-mono text-sm font-bold text-stone-800">{item.time}</span><span className="text-xs font-bold text-stone-600">{item.title}</span></div><p className="text-xs text-stone-400 mt-0.5">{item.desc}</p></div>
+                     </div>
+                   ))}
+                </div>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="font-bold text-stone-800 mb-4 flex items-center"><Footprints size={18} className="mr-2 text-stone-400"/> 不走回头路攻略</h3>
+                <div className="space-y-4">
+                   {[{ title: '宫岛栈桥', desc: '出站往右，沿海边走。' }, { title: '① 表参道商店街', desc: '先稍微逛逛，看“世界最大木勺”。' }, { title: '② 大鸟居 (Great Torii)', desc: '地标打卡。\n• 满潮：拍水上倒影。\n• 干潮：走下滩涂去摸柱子(有藤壶)。' }, { title: '③ 严岛神社', desc: '购票：成人¥300。\n看点：朱红回廊(地板缝隙防浪)、海上能舞台。' }, { title: '④ 丰国神社 & 五重塔', desc: '就在神社出口上方的小山丘。' }, { title: '⑤ 商店街午餐', desc: '绕回来吃午饭，然后坐船离开。' }].map((step, i) => (
+                     <div key={i} className="flex gap-4 relative group"><div className="w-6 h-6 rounded-full bg-emerald-100 border-2 border-emerald-500 z-10 flex items-center justify-center text-xs font-bold text-emerald-700 shrink-0 shadow-sm">{i+1}</div><div className="-mt-1 pb-2"><h4 className="font-bold text-stone-800 text-sm">{step.title}</h4><p className="text-xs text-stone-500 mt-1 leading-relaxed whitespace-pre-line">{step.desc}</p></div></div>
+                   ))}
+                </div>
+             </div>
+          </div>
+        )}
+        {activeTab === 'food' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="relative h-40 rounded-3xl bg-gradient-to-br from-orange-400 to-red-500 overflow-hidden shadow-lg flex flex-col items-center justify-center text-white p-6">
+                <Utensils size={80} className="opacity-20 absolute -right-6 -bottom-6 rotate-12" />
+                <h1 className="text-2xl font-black mb-1">宫岛三大名物</h1>
+                <p className="text-xs opacity-90">牡蛎 · 红叶馒头 · 星鳗饭</p>
+             </div>
+             <div className="grid gap-3">
+                <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-start"><div className="text-4xl mr-4">🦪</div><div><div className="font-bold text-stone-800 text-lg">烤牡蛎 (Yaki-gaki)</div><p className="text-sm text-stone-600">带壳现烤最鲜美，推荐原味或柠檬。<strong>“牡蛎屋”</strong>最有名，路边摊也不错。</p></div></div>
+                <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-start"><div className="text-4xl mr-4">🍁</div><div><div className="font-bold text-stone-800 text-lg">炸红叶馒头</div><div className="text-xs text-stone-400 mb-1">店铺：红叶堂</div><p className="text-sm text-stone-600">裹面糊炸得酥脆，热乎乎的！推荐芝士味/奶油味。</p></div></div>
+                <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-start"><div className="text-4xl mr-4">🍱</div><div><div className="font-bold text-stone-800 text-lg">星鳗饭 (Anago)</div><div className="text-xs text-stone-400 mb-1">店铺：上野(宫岛口)</div><p className="text-sm text-stone-600">如果不想吃广岛烧，这是最佳替代。鳗鱼铺满米饭。</p></div></div>
+             </div>
+          </div>
+        )}
+        {activeTab === 'tips' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="relative h-40 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 overflow-hidden shadow-lg flex flex-col items-center justify-center text-white p-6"><h1 className="text-2xl font-black mb-1">游玩避坑指南</h1></div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm"><h3 className="text-base font-bold text-blue-700 mb-3 flex items-center border-b border-blue-50 pb-2"><Ship size={18} className="mr-2"/> 1. 交通：如何聪明地坐船？</h3><div className="space-y-2 text-sm text-stone-600"><p>✅ <strong>免费</strong>：持有JR关西&广岛周游券，可免费坐JR渡轮。</p><p>🛑 <strong>别坐错</strong>：认准<span className="text-red-500 font-bold">JR西日本宫岛渡轮</span>（红色鸟居标志），不要坐松大汽船。</p><p>💺 <strong>选座</strong>：上船后坐<span className="font-bold text-red-500">右侧</span>。去程会绕行靠近大鸟居，拍照绝佳。</p></div></div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm"><h3 className="text-base font-bold text-amber-700 mb-3 flex items-center border-b border-amber-50 pb-2"><AlertTriangle size={18} className="mr-2"/> 2. 登岛注意：鹿出没</h3><div className="text-sm text-stone-600 space-y-1"><p>❌ <strong>禁止喂食</strong>：没有卖鹿仙贝，不要喂人类食物。</p><p>⚠️ <strong>小心吃纸</strong>：鹿会抢地图、纸币、护照！请收好。</p></div></div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm"><h3 className="text-base font-bold text-teal-700 mb-3 flex items-center border-b border-teal-50 pb-2"><Waves size={18} className="mr-2"/> 3. 潮汐建议</h3><p className="text-sm text-stone-600">早上搜“宫岛潮汐表”。<strong>满潮</strong>看水上漂浮；<strong>干潮</strong>可走下滩涂摸柱子。</p></div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-        <div className="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm">
-           <h3 className="text-lg font-bold text-blue-700 mb-3 flex items-center"><Ship size={20} className="mr-2"/> 交通：聪明坐船法</h3>
-           <div className="space-y-3 text-sm text-stone-600">
-              <div className="flex gap-3">
-                 <div className="bg-blue-100 text-blue-600 font-bold px-2 py-1 rounded text-xs h-fit whitespace-nowrap">选船</div>
-                 <p>请务必乘坐 <span className="font-bold text-stone-800">JR西日本宫岛渡轮</span> (红色鸟居标志)。<br/><span className="text-green-600 font-bold">✔ JR Pass 免费</span></p>
-              </div>
-              <div className="flex gap-3">
-                 <div className="bg-orange-100 text-orange-600 font-bold px-2 py-1 rounded text-xs h-fit whitespace-nowrap">座位</div>
-                 <p>去程请坐在 <span className="font-bold text-red-500">右侧 (Starboard)</span>。JR渡轮会特意绕行靠近大鸟居，是海上拍摄的最佳机位！</p>
-              </div>
-           </div>
-        </div>
+// 2.2 六甲山 & 有马指南 (升级版)
+const RokkoArimaGuide = ({ onBack }) => {
+  const [activeTab, setActiveTab] = useState('route');
 
-        <div className="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm">
-           <h3 className="text-lg font-bold text-emerald-700 mb-4 flex items-center"><MapPin size={20} className="mr-2"/> 推荐步行路线</h3>
-           <div className="space-y-6 relative pl-2">
-              <div className="absolute left-[11px] top-2 bottom-4 w-0.5 bg-stone-200"></div>
-              {[
-                { title: '宫岛栈桥', desc: '出站小心鹿！它们吃纸。' },
-                { title: '表参道商店街', desc: '稍微逛逛，看世界最大木勺。' },
-                { title: '大鸟居 (Great Torii)', desc: '退潮时可走下滩涂去摸柱子(上面有藤壶)。涨潮时拍“水上漂浮”。' },
-                { title: '严岛神社', desc: '国宝回廊，海上能舞台。' },
-                { title: '五重塔 & 千叠阁', desc: '神社出口上方的小山丘，视野极好。' },
-                { title: '返回商店街午餐', desc: '吃饱喝足坐船回程。' }
-              ].map((step, i) => (
-                <div key={i} className="flex gap-4 relative">
-                   <div className="w-5 h-5 rounded-full bg-emerald-100 border-2 border-emerald-500 z-10 flex items-center justify-center text-[10px] font-bold text-emerald-700 shrink-0">{i+1}</div>
-                   <div>
-                      <h4 className="font-bold text-stone-800 text-sm">{step.title}</h4>
-                      <p className="text-xs text-stone-500 mt-1">{step.desc}</p>
+  return (
+    <div className="pb-24 animate-fade-in-up bg-stone-50 min-h-screen">
+       <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200 px-4 pt-4 pb-2 shadow-sm">
+        <div className="flex items-center mb-3">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-stone-100 text-stone-600 transition-colors"><ArrowLeft size={24} /></button>
+          <h2 className="text-lg font-bold text-stone-800 ml-2">六甲山 & 有马指南</h2>
+        </div>
+        <div className="flex space-x-2">
+          <button onClick={() => setActiveTab('route')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'route' ? 'bg-stone-800 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>🗺️ 路线与时间</button>
+          <button onClick={() => setActiveTab('play')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'play' ? 'bg-cyan-500 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>⛄ 必玩与美食</button>
+          <button onClick={() => setActiveTab('tips')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'tips' ? 'bg-blue-600 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>💡 交通Tips</button>
+        </div>
+      </div>
+
+      <div className="p-4 space-y-6 max-w-2xl mx-auto">
+        {activeTab === 'route' && (
+          <div className="space-y-6 animate-fade-in">
+             <div className="relative h-40 rounded-3xl bg-gradient-to-br from-cyan-600 to-blue-700 overflow-hidden shadow-lg flex flex-col items-center justify-center text-white p-6">
+                <Snowflake size={80} className="opacity-10 absolute -right-6 -bottom-6 rotate-12" />
+                <h1 className="text-2xl font-black mb-1 tracking-tight">2月18日 (Day 4)</h1>
+                <p className="text-xs opacity-80">雪山与金泉的完美一天</p>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="font-bold text-stone-800 mb-4 flex items-center"><Clock size={18} className="mr-2 text-stone-400"/> 建议时间表</h3>
+                <div className="space-y-4 relative pl-2">
+                   <div className="absolute left-[5.5px] top-2 bottom-2 w-0.5 bg-stone-100"></div>
+                   {[
+                     { time: '09:30', title: '出发去六甲山', desc: '坐16路巴士到缆车下站。' },
+                     { time: '10:00', title: '换乘替代巴士', desc: '⚠️缆车停运，原地下车换乘替代巴士上山。' },
+                     { time: '10:30', title: '抵达雪乐园', desc: '换乘山上巴士到 Snow Park。' },
+                     { time: '11:00', title: 'Snow Land 玩雪', desc: '玩雪盆、堆雪人。' },
+                     { time: '14:00', title: '坐索道去有马', desc: 'Rokko-Arima Ropeway，空中跨山。' },
+                     { time: '14:30', title: '抵达有马温泉', desc: '开始逛吃模式。' },
+                     { time: '17:40', title: '坐高速巴士回程', desc: '直达三宫。务必提前买票！' },
+                     { time: '19:30', title: '烧肉晚餐', desc: '石田屋 (Ishida) 犒劳自己。' },
+                   ].map((item, i) => (
+                     <div key={i} className="flex gap-4 relative">
+                        <div className="w-3 h-3 rounded-full bg-stone-300 border-2 border-white z-10 shrink-0 mt-1.5"></div>
+                        <div className="flex-1"><div className="flex justify-between items-baseline"><span className="font-mono text-sm font-bold text-stone-800">{item.time}</span><span className="text-xs font-bold text-stone-600">{item.title}</span></div><p className="text-xs text-stone-400 mt-0.5">{item.desc}</p></div>
+                     </div>
+                   ))}
+                </div>
+             </div>
+          </div>
+        )}
+
+        {activeTab === 'play' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-lg font-bold text-cyan-600 mb-4 flex items-center border-b border-cyan-50 pb-2"><Sun size={20} className="mr-2"/> 雪乐园儿童攻略</h3>
+                <ul className="text-sm text-stone-600 space-y-3 list-disc pl-5">
+                  <li><strong>直奔目标</strong>：进门左手边 <span className="font-bold text-blue-600">Snow Land (雪之乐园)</span>。这是儿童专属区域，安全独立。</li>
+                  <li><strong>必玩</strong>：<span className="font-bold">雪盆 (Sledding)</span>。入场券含雪盆租赁(或需500円)，无限次滑。</li>
+                  <li><strong>装备 Tips</strong>：
+                      <ul className="list-circle pl-4 mt-1 text-stone-500 space-y-1">
+                          <li>衣服：给孩子穿<strong>防水裤</strong>(或带备用)，玩雪盆屁股会湿。</li>
+                          <li>鞋子：防滑防水的靴子。</li>
+                          <li>手套：<strong>必带！</strong>玩雪手很冷。</li>
+                      </ul>
+                  </li>
+                </ul>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-lg font-bold text-orange-600 mb-4 flex items-center border-b border-orange-50 pb-2"><Coffee size={20} className="mr-2"/> 有马温泉逛吃三件套</h3>
+                <div className="grid gap-3">
+                   <div className="flex items-start p-3 bg-stone-50 rounded-xl"><div className="text-2xl mr-3">♨️</div><div><div className="font-bold text-stone-800">太阁之足汤</div><p className="text-xs text-stone-500">免费！就在金之汤门口。卷起裤腿就能泡。</p></div></div>
+                   <div className="flex items-start p-3 bg-stone-50 rounded-xl"><div className="text-2xl mr-3">🥔</div><div><div className="font-bold text-stone-800">竹中肉店</div><p className="text-xs text-stone-500">必吃 <span className="text-red-500 font-bold">神户牛可乐饼</span>，现炸的超香。</p></div></div>
+                   <div className="flex items-start p-3 bg-stone-50 rounded-xl"><div className="text-2xl mr-3">🥤</div><div><div className="font-bold text-stone-800">有马汽水</div><p className="text-xs text-stone-500">日本汽水发源地。复古玻璃瓶适合拍照。</p></div></div>
+                </div>
+             </div>
+          </div>
+        )}
+
+        {activeTab === 'tips' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-base font-bold text-blue-700 mb-3 flex items-center border-b border-blue-50 pb-2"><Bus size={18} className="mr-2"/> ⚠️ 缆车运休替代方案</h3>
+                <div className="space-y-2 text-sm text-stone-600">
+                   <p><strong>现状</strong>：六甲缆车2月停运。</p>
+                   <p><strong>对策</strong>：在“六甲缆车下站”原地下车，直接换乘<strong>替代巴士 (Substitute Bus)</strong>。班次衔接很好，不用担心。</p>
+                </div>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-base font-bold text-red-700 mb-3 flex items-center border-b border-red-50 pb-2"><Ticket size={18} className="mr-2"/> 回程巴士购票</h3>
+                <p className="text-sm text-stone-600">从有马温泉回三宫的<strong>高速巴士</strong>非常抢手。强烈建议<strong>Day 1 就在三宫巴士总站 (Mint Kobe 1F)</strong> 把票买好，这样玩完直接上车，不用排队也不怕没座。</p>
+             </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// 2.3 姬路 & 舞子指南 (升级版)
+const HimejiMaikoGuide = ({ onBack }) => {
+  const [activeTab, setActiveTab] = useState('route');
+
+  return (
+    <div className="pb-24 animate-fade-in-up bg-stone-50 min-h-screen">
+       <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200 px-4 pt-4 pb-2 shadow-sm">
+        <div className="flex items-center mb-3">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-stone-100 text-stone-600 transition-colors"><ArrowLeft size={24} /></button>
+          <h2 className="text-lg font-bold text-stone-800 ml-2">姬路 & 舞子指南</h2>
+        </div>
+        <div className="flex space-x-2">
+          <button onClick={() => setActiveTab('route')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'route' ? 'bg-stone-800 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>🗺️ 路线与时间</button>
+          <button onClick={() => setActiveTab('food')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'food' ? 'bg-orange-500 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>🍢 必吃美食</button>
+          <button onClick={() => setActiveTab('tips')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'tips' ? 'bg-blue-600 text-white shadow-md' : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>💡 避坑Tips</button>
+        </div>
+      </div>
+
+      <div className="p-4 space-y-6 max-w-2xl mx-auto">
+        {activeTab === 'route' && (
+          <div className="space-y-6 animate-fade-in">
+             <div className="relative h-40 rounded-3xl bg-gradient-to-br from-stone-600 to-stone-800 overflow-hidden shadow-lg flex flex-col items-center justify-center text-white p-6">
+                <Castle size={80} className="opacity-10 absolute -right-6 -bottom-6 rotate-12" />
+                <h1 className="text-2xl font-black mb-1 tracking-tight">2月19日 (Day 5)</h1>
+                <p className="text-xs opacity-80">国宝与大桥的一天</p>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="font-bold text-stone-800 mb-4 flex items-center"><Clock size={18} className="mr-2 text-stone-400"/> 建议时间表</h3>
+                <div className="space-y-4 relative pl-2">
+                   <div className="absolute left-[5.5px] top-2 bottom-2 w-0.5 bg-stone-100"></div>
+                   {[
+                     { time: '09:00', title: '退房', desc: '行李寄存在酒店前台。' },
+                     { time: '09:30', title: 'JR 新快速', desc: '三宫直达姬路 (40分)。' },
+                     { time: '10:30', title: '姬路城', desc: '买票进城，爬天守阁 (预留2.5h)。' },
+                     { time: '13:00', title: '午餐', desc: '御幸通商店街吃关东煮。' },
+                     { time: '14:30', title: '前往舞子', desc: '坐回程JR，在“舞子站”下车。' },
+                     { time: '15:00', title: '海上散步道', desc: '看明石海峡大桥，走玻璃栈道。' },
+                     { time: '16:30', title: '回到三宫', desc: '稍微休息/喝咖啡。' },
+                     { time: '17:30', title: '告别晚餐', desc: '蟹道乐或寿喜烧。' },
+                     { time: '20:00', title: '去机场', desc: '回酒店取行李 -> 坐机场大巴。' },
+                   ].map((item, i) => (
+                     <div key={i} className="flex gap-4 relative">
+                        <div className="w-3 h-3 rounded-full bg-stone-300 border-2 border-white z-10 shrink-0 mt-1.5"></div>
+                        <div className="flex-1"><div className="flex justify-between items-baseline"><span className="font-mono text-sm font-bold text-stone-800">{item.time}</span><span className="text-xs font-bold text-stone-600">{item.title}</span></div><p className="text-xs text-stone-400 mt-0.5">{item.desc}</p></div>
+                     </div>
+                   ))}
+                </div>
+             </div>
+          </div>
+        )}
+
+        {activeTab === 'food' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-lg font-bold text-orange-600 mb-4 flex items-center border-b border-orange-50 pb-2"><Utensils size={20} className="mr-2"/> 姬路必吃：关东煮</h3>
+                <div className="flex gap-4 items-start">
+                   <div className="text-5xl">🍢</div>
+                   <div className="text-sm text-stone-600 space-y-2">
+                     <p><strong>姬路关东煮 (Himeji Oden)</strong>：和普通的清汤关东煮不同，这里的特色是蘸着 <strong>生姜酱油</strong> 吃。姜的辛辣正好驱散城堡里的寒气，非常适合冬天。</p>
+                     <p><strong>哪里吃？</strong>：连接车站和城堡的 <strong>御幸通商店街 (Miyuki Dori)</strong> 里，随便找一家居酒屋或食堂都有。</p>
                    </div>
                 </div>
-              ))}
-           </div>
-        </div>
+             </div>
+          </div>
+        )}
 
-        <div className="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm">
-           <h3 className="text-lg font-bold text-orange-700 mb-3 flex items-center"><Utensils size={20} className="mr-2"/> 必吃美食清单</h3>
-           <div className="grid grid-cols-2 gap-3">
-              <div className="bg-stone-50 p-3 rounded-xl">
-                 <div className="text-2xl mb-1">🦪</div>
-                 <div className="font-bold text-stone-800 text-sm">烤牡蛎</div>
-                 <div className="text-xs text-stone-500">Kakiya或路边摊</div>
-              </div>
-              <div className="bg-stone-50 p-3 rounded-xl">
-                 <div className="text-2xl mb-1">🍁</div>
-                 <div className="font-bold text-stone-800 text-sm">炸红叶馒头</div>
-                 <div className="text-xs text-stone-500">红叶堂 (芝士味)</div>
-              </div>
-              <div className="bg-stone-50 p-3 rounded-xl col-span-2 flex items-center">
-                 <div className="text-2xl mr-3">🍱</div>
-                 <div>
-                    <div className="font-bold text-stone-800 text-sm">星鳗饭 (Anago-meshi)</div>
-                    <div className="text-xs text-stone-500">名店"上野"在宫岛口车站旁</div>
-                 </div>
-              </div>
-           </div>
-        </div>
+        {activeTab === 'tips' && (
+          <div className="space-y-4 animate-fade-in">
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-base font-bold text-red-700 mb-3 flex items-center border-b border-red-50 pb-2"><Flag size={18} className="mr-2"/> 姬路城攻克 Tips</h3>
+                <ul className="text-sm text-stone-600 space-y-3 list-disc pl-5">
+                  <li><strong>关于楼梯</strong>：天守阁内部完全保留了古代结构。楼梯<span className="text-red-600 font-bold">非常陡 (接近60度)</span>且滑。上下务必抓紧扶手，照顾好孩子。</li>
+                  <li><strong>关于鞋子</strong>：进天守阁必须脱鞋，提着塑料袋走完全程。</li>
+                  <li><strong>救命装备</strong>：<span className="bg-red-100 text-red-800 px-1 rounded font-bold">厚袜子！</span> 2月份的木地板极冷，像踩在冰上。请务必穿最厚的袜子去。</li>
+                </ul>
+             </div>
+             <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+                <h3 className="text-base font-bold text-teal-700 mb-3 flex items-center border-b border-teal-50 pb-2"><Anchor size={18} className="mr-2"/> 舞子恐高预警</h3>
+                <p className="text-sm text-stone-600">舞子海上散步道有一段 <strong>透明玻璃地板</strong>，脚下就是波涛汹涌的大海，高度 47 米！如果恐高，请走旁边的木板路。</p>
+             </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -143,7 +328,7 @@ const HandDrawnMap = ({ day }) => {
                 <LocationLabel x="85%" y="80%" icon={MapPin} label="新神户站" color="bg-stone-200" />
                 <LocationLabel x="30%" y="45%" icon={Train} label="广岛站" color="bg-stone-100" />
                 <LocationLabel x="10%" y="20%" icon={Torii} label="宫岛/严岛神社" color="bg-red-100" textColor="text-red-800" />
-                <LocationLabel x="30%" y="25%" icon={Landmark} label="原爆/纸鹤塔" color="bg-teal-100" textColor="text-teal-800" />
+                <LocationLabel x="30%" y="25%" icon={Landmark} label="原爆/纪念馆" color="bg-teal-100" textColor="text-teal-800" />
                 <TransportLabel x="55%" y="60%" text="新干线 (Pass)" rotate={-25} color="text-blue-600" />
                 <TransportLabel x="15%" y="35%" text="渡轮" rotate={35} color="text-orange-500" />
               </>
@@ -248,28 +433,26 @@ const itineraryData = {
   day2: {
     date: '2/16',
     weekday: '周一',
-    title: '广岛双遗',
+    title: '六甲山 & 有马',
     stay: 'Daiwa Roynet 神户三宫PREMIER',
-    themeColor: 'from-blue-600 to-indigo-600',
-    color: 'bg-blue-50 border-blue-100',
+    themeColor: 'from-cyan-500 to-blue-500',
+    color: 'bg-cyan-50 border-cyan-100',
     events: [
-      { time: '08:00', icon: Train, title: '前往新神户站', desc: '地铁西神・山手线 (1站) → 新神户', tag: '交通', tagColor: 'blue' },
-      { time: '08:30', icon: Train, title: '新干线 (Nozomi)', desc: '新神户 → 广岛 (70分) [JR Pass]\n推荐：尽量选右侧座位(E席)，风景更好。', tag: '交通', tagColor: 'blue' },
-      // --- 可点击的宫岛事件 ---
+      { time: '09:30', icon: Bus, title: '上山交通', desc: '⚠️缆车运休。坐16路巴士 -> 替代巴士 -> 山上巴士。\n(替代巴士班次衔接，约20-30分一班)', tag: '交通', tagColor: 'blue' },
       { 
-        time: '10:00', 
-        icon: Ship, 
-        title: '宫岛 (严岛神社)', 
-        desc: 'JR山阳本线 -> 宫岛口 -> JR渡轮(10分)。\n👉 点击查看【深度游玩指南】(含美食/路线)', 
-        tag: '必游', 
-        tagColor: 'red',
-        link: 'miyajima', // 标记链接
-        highlight: true
+        time: '11:00', 
+        icon: Sun, 
+        title: '六甲山雪乐园', 
+        desc: 'Snow Land 玩雪盆 (2小时)\n👉 点击查看【六甲山攻略】', 
+        tag: '游玩', 
+        tagColor: 'emerald',
+        link: 'rokko',
+        highlight: true 
       },
-      { time: '13:00', icon: Utensils, title: '午餐：广岛烧/牡蛎', desc: '宫岛口或广岛站吃。', tag: '用餐', tagColor: 'rose' },
-      { time: '14:30', icon: Landmark, title: '原爆圆顶 & 纸鹤塔', desc: '广岛站坐路面电车(2/6号)直达。\n1. 原爆圆顶馆 (世界遗产)\n2. 纸鹤塔 (Orizuru Tower): 顶楼看全景，折纸鹤。', tag: '必游', tagColor: 'emerald' },
-      { time: '17:30', icon: Train, title: '新干线返程', desc: '广岛 → 新神户 [JR Pass]。\n⚠️ 务必坐上17:30-18:00的车，确保19:30前到餐厅！', tag: '交通', tagColor: 'blue' },
-      { time: '19:30', icon: Utensils, title: '晚餐：Mori Mori 寿司', desc: '三宫OPA 2店。金泽人气回转寿司。', tag: '用餐', tagColor: 'rose' }
+      { time: '14:30', icon: Train, title: '六甲有马索道', desc: '绝景跨山缆车 (12分)', tag: '交通', tagColor: 'blue' },
+      { time: '15:30', icon: Coffee, title: '有马温泉 (逛吃)', desc: '不一定要泡澡！\n★必做：1.金之汤足汤(免费) 2.吃竹中肉店可乐饼 3.喝有马汽水。', tag: '游玩', tagColor: 'emerald' },
+      { time: '17:40', icon: Bus, title: '高速巴士回程', desc: '阪急/JR巴士 → 三宫 (40分)。\n⚠️ 建议Day1在三宫巴士总站(Mint 1F)提前买好票！', tag: '交通', tagColor: 'blue' },
+      { time: '19:30', icon: Utensils, title: '晚餐：烧肉石田屋', desc: '★ 已预定 19:30。\n顶级神户牛烧肉！运动完吃肉最香。', tag: '必吃', tagColor: 'red' }
     ]
   },
   day3: {
@@ -280,7 +463,7 @@ const itineraryData = {
     themeColor: 'from-purple-500 to-pink-500',
     color: 'bg-purple-50 border-purple-100',
     events: [
-      { time: '10:00', icon: Mountain, title: '第一站：Montbell', desc: '在花钟路。优先买齐明天滑雪的保暖装备！', tag: '购物', tagColor: 'orange' },
+      { time: '10:00', icon: Mountain, title: '第一站：Montbell', desc: '在花钟路。优先买齐滑雪保暖装备！', tag: '购物', tagColor: 'orange' },
       { time: '11:00', icon: ShoppingCart, title: '超市扫货 & 杂货', desc: '1. Hankyu Oasis (买油盐酱醋)\n2. Daiso/3COINS\n⚠️ 买完重物立刻放回酒店！', tag: '生活', tagColor: 'orange' },
       { time: '12:30', icon: Utensils, title: '午餐：中华街', desc: '南京町。老祥记包子、神户牛拉面。', tag: '用餐', tagColor: 'rose' },
       { time: '14:00', icon: Shirt, title: '潮牌区 (旧居留地)', desc: 'Bshop, nanamica, TNF, Patagonia。\n买完先把战利品放回酒店！', tag: '购物', tagColor: 'purple' },
@@ -292,17 +475,28 @@ const itineraryData = {
   day4: {
     date: '2/18',
     weekday: '周三',
-    title: '六甲山 & 有马',
+    title: '广岛双遗 & 购物',
     stay: 'Daiwa Roynet 神户三宫PREMIER',
-    themeColor: 'from-cyan-500 to-blue-500',
-    color: 'bg-cyan-50 border-cyan-100',
+    themeColor: 'from-blue-600 to-indigo-600',
+    color: 'bg-blue-50 border-blue-100',
     events: [
-      { time: '09:30', icon: Bus, title: '上山交通', desc: '⚠️缆车运休。坐16路巴士 -> 替代巴士 -> 山上巴士。\n(替代巴士班次衔接，约20-30分一班)', tag: '交通', tagColor: 'blue' },
-      { time: '11:00', icon: Sun, title: '六甲山雪乐园', desc: 'Snow Land 玩雪盆 (2小时)\n*穿上昨天买的新装备！', tag: '游玩', tagColor: 'emerald' },
-      { time: '14:30', icon: Train, title: '六甲有马索道', desc: '绝景跨山缆车 (12分)', tag: '交通', tagColor: 'blue' },
-      { time: '15:30', icon: Coffee, title: '有马温泉 (逛吃)', desc: '不一定要泡澡！\n★必做：1.金之汤足汤(免费) 2.吃竹中肉店可乐饼 3.喝有马汽水。', tag: '游玩', tagColor: 'emerald' },
-      { time: '17:40', icon: Bus, title: '高速巴士回程', desc: '阪急/JR巴士 → 三宫 (40分)。\n⚠️ 建议Day1在三宫巴士总站(Mint 1F)提前买好票！', tag: '交通', tagColor: 'blue' },
-      { time: '19:30', icon: Utensils, title: '晚餐：烧肉石田屋', desc: '★ 已预定 19:30。\n顶级神户牛烧肉！运动完吃肉最香。', tag: '必吃', tagColor: 'red' }
+      { time: '08:00', icon: Train, title: '前往新神户站', desc: '地铁西神・山手线 (1站, 2分钟) → 新神户', tag: '交通', tagColor: 'blue' },
+      { time: '08:30', icon: Train, title: '新干线 (Nozomi)', desc: '新神户 → 广岛 (70分) [JR Pass]', tag: '交通', tagColor: 'blue' },
+      { 
+        time: '10:00', 
+        icon: Ship, 
+        title: '宫岛 (严岛神社)', 
+        desc: 'JR山阳本线 -> 宫岛口 -> JR渡轮(10分)。\n👉 点击查看【深度游玩指南】(含美食/路线)', 
+        tag: '必游', 
+        tagColor: 'red',
+        link: 'miyajima', // 标记链接
+        highlight: true
+      },
+      { time: '13:00', icon: Utensils, title: '午餐：广岛烧/牡蛎', desc: '宫岛口或广岛站吃。', tag: '用餐', tagColor: 'rose' },
+      { time: '14:30', icon: Landmark, title: '原爆圆顶 & 纪念馆', desc: '广岛站坐路面电车(2/6号)直达。\n1. 原爆圆顶馆 (世界遗产)\n2. 和平纪念资料馆 (强烈推荐)', tag: '必游', tagColor: 'emerald' },
+      { time: '16:30', icon: ShoppingBag, title: '广岛市区购物', desc: '纸屋町/本通商店街。\n可逛：BicCamera (车站旁)、Montbell、BEAMS。', tag: '购物', tagColor: 'purple' },
+      { time: '18:30', icon: Train, title: '新干线返程', desc: '广岛 → 新神户 [JR Pass]。', tag: '交通', tagColor: 'blue' },
+      { time: '20:00', icon: Utensils, title: '晚餐：Mori Mori 寿司', desc: '三宫OPA 2店。金泽人气回转寿司。', tag: '用餐', tagColor: 'rose' }
     ]
   },
   day5: {
@@ -315,7 +509,16 @@ const itineraryData = {
     events: [
       { time: '09:00', icon: CheckSquare, title: '退房 & 存行李', desc: '【关键】3个大箱子寄存在酒店前台 (免费)。', tag: '提示', tagColor: 'orange' },
       { time: '09:30', icon: Train, title: '前往姬路', desc: 'JR新快速 (40分钟) 直达。\n*不去新神户坐新干线了，新快速直达更方便。', tag: '交通', tagColor: 'blue' },
-      { time: '10:30', icon: Flag, title: '姬路城 (白鹭城)', desc: '日本第一名城。爬天守阁 (穿厚袜)。\n建议预留 2.5 小时。', tag: '必游', tagColor: 'red' },
+      { 
+        time: '10:30', 
+        icon: Flag, 
+        title: '姬路城 (白鹭城)', 
+        desc: '日本第一名城。爬天守阁 (穿厚袜)。\n👉 点击查看【姬路攻略】', 
+        tag: '必游', 
+        tagColor: 'red',
+        link: 'himeji',
+        highlight: true 
+      },
       { time: '13:00', icon: Utensils, title: '午餐：姬路关东煮', desc: '推荐在“御幸通商店街”吃 (生姜酱油味)。', tag: '用餐', tagColor: 'rose' },
       { time: '14:30', icon: Train, title: '前往舞子 (回程顺路)', desc: '坐JR回程，在“舞子站”下车 (30分钟)。', tag: '交通', tagColor: 'blue' },
       { time: '15:00', icon: Anchor, title: '舞子海上散步道', desc: '走在明石海峡大桥的玻璃地板上，看海景。', tag: '游玩', tagColor: 'emerald' },
@@ -355,6 +558,26 @@ const transportData = {
     ]
   },
   day2: {
+    title: "六甲山 & 有马温泉",
+    summary: "回程务必坐大巴，不要坐电车。",
+    comparisons: [
+      {
+        title: "上山：三宫 → 六甲缆车",
+        options: [
+           { name: "替代巴士 (因运休)", icon: Bus, time: "20分钟", price: "含在套票", comfort: 4, pros: "替代缆车，直接坐车上山。", recommend: true }
+        ]
+      },
+      {
+        title: "回程：有马温泉 → 三宫",
+        options: [
+          { name: "高速巴士", icon: Bus, time: "40分钟", price: "¥780", comfort: 5, pros: "直达，有座。", cons: "Pass 不含。", recommend: true },
+          { name: "神户电铁", icon: Train, time: "60分钟", price: "¥950", comfort: 2, pros: "随到随走。", cons: "转车2次。Pass 不含。" }
+        ]
+      }
+    ]
+  },
+  day3: { title: "神户市内 City Walk", summary: "全程步行即可 (City Walk)。", comparisons: [] },
+  day4: {
     title: "广岛一日游",
     summary: "利用 JR Pass 坐新干线。",
     comparisons: [
@@ -375,26 +598,6 @@ const transportData = {
         title: "广岛站 → 原爆圆顶",
         options: [
           { name: "路面电车 (2号/6号线)", icon: Train, time: "20分钟", price: "¥220", comfort: 4, pros: "直达，体验好。", recommend: true }
-        ]
-      }
-    ]
-  },
-  day3: { title: "神户市内 City Walk", summary: "全程步行即可 (City Walk)。", comparisons: [] },
-  day4: {
-    title: "六甲山 & 有马温泉",
-    summary: "回程务必坐大巴，不要坐电车。",
-    comparisons: [
-      {
-        title: "上山：三宫 → 六甲缆车",
-        options: [
-           { name: "替代巴士 (因运休)", icon: Bus, time: "20分钟", price: "含在套票", comfort: 4, pros: "替代缆车，直接坐车上山。", recommend: true }
-        ]
-      },
-      {
-        title: "回程：有马温泉 → 三宫",
-        options: [
-          { name: "高速巴士", icon: Bus, time: "40分钟", price: "¥780", comfort: 5, pros: "直达，有座。", cons: "Pass 不含。", recommend: true },
-          { name: "神户电铁", icon: Train, time: "60分钟", price: "¥950", comfort: 2, pros: "随到随走。", cons: "转车2次。Pass 不含。" }
         ]
       }
     ]
@@ -428,56 +631,56 @@ const transportData = {
   day6: { title: "回国", summary: "步行至柜台。", comparisons: [] }
   };
 
-const shoppingList = [
-  { name: 'Bshop', tags: ['海岸通', 'Danton/Nanga'], note: '神户本店货最全。' },
-  { name: 'nanamica KOBE', tags: ['旧居留地', '紫标'], note: '独立路面店，款式极多。' },
-  { name: 'The North Face', tags: ['海岸通', '户外'], note: '就在 Nanamica 隔壁。' },
-  { name: 'Patagonia', tags: ['海岸通', '户外'], note: '也在附近，步行可达。' },
-  { name: 'Montbell', tags: ['三宫', '户外'], note: '三宫店很大，适合补货。' },
-  { name: '金子眼镜', tags: ['大丸6F', '眼镜'], note: '在大丸百货楼上。' },
-  { name: '3COINS / Daiso', tags: ['车站', '杂货'], note: '地下街或商店街。' },
-  { name: 'Bookoff', tags: ['Center Plaza', '二手'], note: 'Center Plaza 2F/3F。' },
-  { name: 'Hankyu Oasis', tags: ['生活超市', '油盐酱醋'], note: '神户阪急B1。买调料首选。' },
-];
-
-const hotelBookings = [
-  { name: 'Daiwa Roynet Hotel 神户三宫PREMIER', dates: '2/15 - 2/19 (4晚)', status: '不可取消 (携程)', note: '儿童友好', active: true },
-  { name: '日航关西机场酒店', dates: '2/19 - 2/20 (1晚)', status: '免费取消 (Agoda)', note: '推荐入住', active: true, highlight: true },
-  { name: '大阪关西机场奥德西斯', dates: '2/19 - 2/20 (1晚)', status: '免费取消 (飞猪)', note: '建议取消', active: false, warn: true }
+  const shoppingList = [
+    { name: 'Bshop', tags: ['海岸通', 'Danton/Nanga'], note: '神户本店货最全。' },
+    { name: 'nanamica KOBE', tags: ['旧居留地', '紫标'], note: '独立路面店，款式极多。' },
+    { name: 'The North Face', tags: ['海岸通', '户外'], note: '就在 Nanamica 隔壁。' },
+    { name: 'Patagonia', tags: ['海岸通', '户外'], note: '也在附近，步行可达。' },
+    { name: 'Montbell', tags: ['三宫', '户外'], note: '三宫店很大，适合补货。' },
+    { name: '金子眼镜', tags: ['大丸6F', '眼镜'], note: '在大丸百货楼上。' },
+    { name: '3COINS / Daiso', tags: ['车站', '杂货'], note: '地下街或商店街。' },
+    { name: 'Bookoff', tags: ['Center Plaza', '二手'], note: 'Center Plaza 2F/3F。' },
+    { name: 'Hankyu Oasis', tags: ['生活超市', '油盐酱醋'], note: '神户阪急B1。买调料首选。' },
   ];
 
-const checklistItems = [
-  { item: 'JR 关西&广岛周游券', status: '必做', note: 'Klook购买兑换券。Day 1 启用。' },
-  { item: 'Day 2 晚餐: 烧肉石田屋', status: '已完成', note: '已预定 19:30。' },
-  { item: 'Day 5 晚餐: 蟹道乐/寿喜烧', status: '必做', note: '提前官网预定。' },
-  { item: 'Day 4 交通: 有马回程巴士', status: '建议', note: '提前1周买票。' },
-  { item: '请取消: 奥德西斯套房酒店', status: '紧急', note: '2月18日前取消。' },
-  { item: '手机流量卡 (亿点原生)', status: '未准备', note: '7天10G。' },
-  { item: '浦东接送机', status: '未准备', note: '预约。' },
-  { item: 'VJW 入境码', status: '未准备', note: 'Visit Japan Web。' },
+  const hotelBookings = [
+    { name: 'Daiwa Roynet Hotel 神户三宫PREMIER', dates: '2/15 - 2/19 (4晚)', status: '不可取消 (携程)', note: '儿童友好', active: true },
+    { name: '日航关西机场酒店', dates: '2/19 - 2/20 (1晚)', status: '免费取消 (Agoda)', note: '推荐入住', active: true, highlight: true },
+    { name: '大阪关西机场奥德西斯', dates: '2/19 - 2/20 (1晚)', status: '免费取消 (飞猪)', note: '建议取消', active: false, warn: true }
   ];
 
-const packingList = [
-  { category: '重要证件', items: ['护照 (6个月以上有效期)', '机票行程单 (打印)', '酒店确认单 (日语/英语)', '现金 (3-5万日元)', '信用卡 (Visa/Master)', 'ICOCA/Suica卡 (苹果钱包)'] },
-  { category: '电子产品', items: ['手机 & 充电器', '充电宝 (随身带)', '转换插头 (日本两扁孔)', '流量卡 / eSIM', '孩子iPad/耳机'] },
-  { category: '衣物 (2月神户)', items: ['羽绒服 (防风)', '保暖内衣 (Uniqlo Heattech)', '厚袜子 (多带几双)', '舒适走路鞋', '围巾/手套/帽子'] },
-  { category: '亲子/生活', items: ['牙刷牙膏 (日本酒店有时不提供)', '个人护肤品 (小样)', '常备药 (感冒/肠胃/创可贴)', '折叠伞', '大号购物袋 (装战利品)'] },
-  { category: '超市扫货', items: ['气泡纸 (包酱油/醋)', '密封袋 (防漏)', '折叠手提袋 (超市用)'] }
-];
+  const checklistItems = [
+    { item: 'JR 关西&广岛周游券', status: '必做', note: 'Klook购买兑换券。Day 1 启用。' },
+    { item: 'Day 2 晚餐: 烧肉石田屋', status: '已完成', note: '已预定 19:30。' },
+    { item: 'Day 5 晚餐: 蟹道乐/寿喜烧', status: '必做', note: '提前官网预定。' },
+    { item: 'Day 2 交通: 有马回程巴士', status: '建议', note: '提前1周买票。' },
+    { item: '请取消: 奥德西斯套房酒店', status: '紧急', note: '2月18日前取消。' },
+    { item: '手机流量卡 (亿点原生)', status: '未准备', note: '7天10G。' },
+    { item: '浦东接送机', status: '未准备', note: '预约。' },
+    { item: 'VJW 入境码', status: '未准备', note: 'Visit Japan Web。' },
+  ];
 
-const jrPassInfo = {
-  title: 'JR 关西&广岛地区周游券 (5日)',
-  price: '¥17,000 /人',
-  validity: '5天无限次乘坐 (Day 1 - Day 5)',
-  coverage: [
-    { route: '新神户 ⇔ 广岛', type: '山阳新干线 (指定席)', time: '70分钟 (Nozomi)', note: '光这一趟往返就值回票价 (单买约¥20000)。可坐Hello Kitty新干线。' },
-    { route: '广岛 ⇔ 宫岛口/吴市', type: 'JR 在来线', time: '含JR渡轮', note: '去宫岛的船也免费坐。' },
-    { route: '新神户 ⇔ 姬路', type: '新干线', time: '15分钟', note: 'Day 5 坐这个去姬路，比普通车快半小时。' },
-    { route: '兑换地点', type: '自动售票机', time: '关西机场/三宫', note: '找带有地球仪标志的绿色售票机，扫护照+二维码兑换。' },
-    { route: '如何划座', type: '自动售票机', time: '免费6次', note: '拿到Pass后，在机器上插票 → 选“指定席” → 选车次(广岛/姬路) → 出票。' }
-  ],
-  verdict: '✅ 必买神器：Day 2 广岛往返 + Day 5 姬路新干线，总价值超过 ¥25,000。省钱又省时！'
-};
+  const packingList = [
+    { category: '重要证件', items: ['护照 (6个月以上有效期)', '机票行程单 (打印)', '酒店确认单 (日语/英语)', '现金 (3-5万日元)', '信用卡 (Visa/Master)', 'ICOCA/Suica卡 (苹果钱包)'] },
+    { category: '电子产品', items: ['手机 & 充电器', '充电宝 (随身带)', '转换插头 (日本两扁孔)', '流量卡 / eSIM', '孩子iPad/耳机'] },
+    { category: '衣物 (2月神户)', items: ['羽绒服 (防风)', '保暖内衣 (Uniqlo Heattech)', '厚袜子 (多带几双)', '舒适走路鞋', '围巾/手套/帽子'] },
+    { category: '亲子/生活', items: ['牙刷牙膏 (日本酒店有时不提供)', '个人护肤品 (小样)', '常备药 (感冒/肠胃/创可贴)', '折叠伞', '大号购物袋 (装战利品)'] },
+    { category: '超市扫货', items: ['气泡纸 (包酱油/醋)', '密封袋 (防漏)', '折叠手提袋 (超市用)'] }
+  ];
+
+  const jrPassInfo = {
+    title: 'JR 关西&广岛地区周游券 (5日)',
+    price: '¥17,000 /人',
+    validity: '5天无限次乘坐 (Day 1 - Day 5)',
+    coverage: [
+      { route: '新神户 ⇔ 广岛', type: '山阳新干线 (指定席)', time: '70分钟 (Nozomi)', note: '光这一趟往返就值回票价 (单买约¥20000)。可坐Hello Kitty新干线。' },
+      { route: '广岛 ⇔ 宫岛口/吴市', type: 'JR 在来线', time: '含JR渡轮', note: '去宫岛的船也免费坐。' },
+      { route: '新神户 ⇔ 姬路', type: '新干线', time: '15分钟', note: 'Day 5 坐这个去姬路，比普通车快半小时。' },
+      { route: '兑换地点', type: '自动售票机', time: '关西机场/三宫', note: '找带有地球仪标志的绿色售票机，扫护照+二维码兑换。' },
+      { route: '如何划座', type: '自动售票机', time: '免费6次', note: '拿到Pass后，在机器上插票 → 选“指定席” → 选车次(广岛/姬路) → 出票。' }
+    ],
+    verdict: '✅ 必买神器：Day 4 广岛往返 + Day 5 姬路新干线，总价值超过 ¥25,000。省钱又省时！'
+  };
 
 // --- 5. 主组件 ---
 
@@ -486,12 +689,12 @@ const ItineraryApp = () => {
   const [selectedDay, setSelectedDay] = useState('day1');
   const [checklistTab, setChecklistTab] = useState('jrpass');
   const [layoutMode, setLayoutMode] = useState('card'); 
-  const [showMiyajimaGuide, setShowMiyajimaGuide] = useState(false);
+  const [currentGuide, setCurrentGuide] = useState(null); // 'miyajima', 'rokko', 'himeji', or null
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
-  }, [selectedDay, activeTab, layoutMode, showMiyajimaGuide]);
+  }, [selectedDay, activeTab, layoutMode, currentGuide]);
 
   const toggleLayout = () => {
     const modes = ['card', 'list', 'magazine'];
@@ -500,8 +703,8 @@ const ItineraryApp = () => {
   };
 
   const handleEventClick = (event) => {
-    if (event.link === 'miyajima') {
-      setShowMiyajimaGuide(true);
+    if (event.link) {
+      setCurrentGuide(event.link);
     }
   };
 
@@ -559,8 +762,10 @@ const ItineraryApp = () => {
   const renderDayView = () => {
     const data = itineraryData[selectedDay];
     
+    // 确保数据存在
     if (!data) return null;
 
+    // --- 视图模式渲染逻辑 ---
     if (layoutMode === 'list') {
         const borderColor = data.color ? data.color.replace('bg-', 'border-l-').split(' ')[0] : 'border-gray-200';
         return (
@@ -666,7 +871,7 @@ const ItineraryApp = () => {
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 ${tagClass}`}>{event.tag}</span>
                   </div>
                   
-                  <div className={`p-4 rounded-2xl border transition-all ${event.highlight ? 'bg-white border-indigo-100 shadow-lg shadow-indigo-100/50' : 'bg-white border-gray-100 shadow-sm'} ${event.link ? 'active:scale-95 cursor-pointer' : ''}`}>
+                  <div className={`p-4 rounded-2xl border transition-all ${event.highlight ? 'bg-white border-indigo-100 shadow-lg shadow-indigo-100/50' : 'bg-white border-gray-100 shadow-sm'} ${event.link ? 'active:scale-95 cursor-pointer hover:border-indigo-200' : ''}`}>
                     <div className="flex items-start gap-3">
                       <div className={`p-2 rounded-xl shrink-0 ${event.highlight ? 'bg-indigo-50 text-indigo-600' : 'bg-gray-50 text-gray-500'}`}>
                         <event.icon size={20} strokeWidth={2} />
@@ -818,7 +1023,7 @@ const ItineraryApp = () => {
   return (
     <div className="min-h-screen bg-[#f8f9fc] font-sans text-stone-800 max-w-md mx-auto shadow-2xl overflow-hidden relative flex flex-col">
       {/* 顶部日期栏 (胶囊风格) */}
-      {!showMiyajimaGuide && (
+      {!currentGuide && (
         <div className="bg-white/90 backdrop-blur-md sticky top-0 z-50 pt-safe-top">
           <div className="px-5 py-3 flex justify-between items-end">
               <div>
@@ -849,9 +1054,11 @@ const ItineraryApp = () => {
 
       {/* 主内容区 */}
       <div className="flex-1 overflow-y-auto hide-scrollbar p-5" ref={scrollContainerRef}>
-         {showMiyajimaGuide ? (
-           <MiyajimaGuide onBack={() => setShowMiyajimaGuide(false)} />
-         ) : (
+         {currentGuide === 'miyajima' && <MiyajimaGuide onBack={() => setCurrentGuide(null)} />}
+         {currentGuide === 'rokko' && <RokkoArimaGuide onBack={() => setCurrentGuide(null)} />}
+         {currentGuide === 'himeji' && <HimejiMaikoGuide onBack={() => setCurrentGuide(null)} />}
+         
+         {!currentGuide && (
            <>
              {activeTab === 'itinerary' && renderDayView()}
              {activeTab === 'transport' && renderTransportView()}
@@ -862,7 +1069,7 @@ const ItineraryApp = () => {
       </div>
 
       {/* 底部导航 (悬浮大卡片风格) - 仅在非指南模式下显示 */}
-      {!showMiyajimaGuide && (
+      {!currentGuide && (
         <div className="absolute bottom-0 w-full p-4 z-50 bg-gradient-to-t from-white via-white to-transparent pb-6 pt-10">
           <div className="bg-white rounded-full shadow-2xl shadow-gray-200/50 border border-gray-100 p-2 flex justify-between items-center px-6">
               <button onClick={() => setActiveTab('itinerary')} className={`p-2 rounded-full transition-all ${activeTab === 'itinerary' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:text-gray-600'}`}>
