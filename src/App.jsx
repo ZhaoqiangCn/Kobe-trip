@@ -5,12 +5,90 @@ import {
   AlertTriangle, Plane, Luggage, CheckCircle,
   ArrowRight, Bus, Ticket, CreditCard, ShieldAlert,
   ShoppingBag, FileText, Gift, Store, Activity, 
-  Flame, Droplet, Fish, Car, X, Map, User
+  Flame, Droplet, Fish, Car, X, Map, User,
+  ClipboardList, Smartphone, Briefcase
 } from 'lucide-react';
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState('itinerary'); 
+  const [activeTab, setActiveTab] = useState('packing'); // Default to packing to show new feature
   const [activeDay, setActiveDay] = useState(0); 
+
+  // --------------------------------------------------------------------------------
+  // 0. 行前清单数据 (New)
+  // --------------------------------------------------------------------------------
+  const [packingItems, setPackingItems] = useState([
+    {
+      category: '证件与票券 (绝对不能忘)',
+      icon: 'file',
+      color: 'bg-red-500',
+      items: [
+        { id: 'p1', name: '护照 (有效期6个月以上)', checked: false },
+        { id: 'p2', name: 'JR Pass 兑换券 (打印件或电子版)', checked: false, important: true },
+        { id: 'p3', name: '日元现金 (建议 ¥50,000+，备零钱)', checked: false },
+        { id: 'p4', name: '信用卡 (Visa/Master) x2', checked: false },
+        { id: 'p5', name: '机票行程单 (入境备查)', checked: false },
+        { id: 'p6', name: '石田屋/有马酒店 预约确认信', checked: false, important: true }
+      ]
+    },
+    {
+      category: '衣物 (2月关西 3-10°C)',
+      icon: 'briefcase',
+      color: 'bg-blue-500',
+      items: [
+        { id: 'c1', name: '防风羽绒服 (琵琶湖/六甲山极冷)', checked: false, important: true },
+        { id: 'c2', name: '保暖内衣 (Heattech) x3套', checked: false },
+        { id: 'c3', name: '好走路的鞋 (日行2万步)', checked: false },
+        { id: 'c4', name: '厚袜子 (姬路城脱鞋后地板极凉)', checked: false, important: true },
+        { id: 'c5', name: '围巾/帽子/手套 (防风必备)', checked: false },
+        { id: 'c6', name: '睡衣 (部分酒店提供，可不带)', checked: false }
+      ]
+    },
+    {
+      category: '电子与网络',
+      icon: 'phone',
+      color: 'bg-purple-500',
+      items: [
+        { id: 'e1', name: '日本流量卡 / 漫游包', checked: false, important: true },
+        { id: 'e2', name: '充电宝 (导航耗电快，必须带)', checked: false },
+        { id: 'e3', name: '两孔插头 (日本电压100V，两扁孔)', checked: false },
+        { id: 'e4', name: '各类充电线', checked: false },
+        { id: 'e5', name: '西瓜卡 (Suica/ICOCA) 苹果手机可开', checked: false }
+      ]
+    },
+    {
+      category: '生活杂物 (提升幸福感)',
+      icon: 'bag',
+      color: 'bg-green-500',
+      items: [
+        { id: 'm1', name: '零钱袋 (日本硬币非常多)', checked: false, important: true },
+        { id: 'm2', name: '塑料袋 (随身垃圾袋，街上没桶)', checked: false },
+        { id: 'm3', name: '牙刷牙膏 (响应环保，部分酒店不给)', checked: false },
+        { id: 'm4', name: '保湿面霜/身体乳 (日本很干)', checked: false },
+        { id: 'm5', name: '休足时间/膏药 (每晚贴腿)', checked: false },
+        { id: 'm6', name: '签字笔 (填入境卡)', checked: false }
+      ]
+    }
+  ]);
+
+  const toggleItem = (categoryId, itemId) => {
+    const newItems = [...packingItems];
+    const category = newItems.find(c => c.category === categoryId);
+    if(category) {
+        // Find category index first since we mapped based on state structure
+        // Actually easier to just map and update
+    }
+    
+    setPackingItems(packingItems.map(cat => {
+      if (cat.category !== categoryId) return cat;
+      return {
+        ...cat,
+        items: cat.items.map(item => {
+          if (item.id !== itemId) return item;
+          return { ...item, checked: !item.checked };
+        })
+      };
+    }));
+  };
 
   // --------------------------------------------------------------------------------
   // 1. 详细行程数据
@@ -54,7 +132,7 @@ const App = () => {
       location: 'Shiga',
       color: 'bg-sky-600',
       timeline: [
-        { time: '08:30', task: '琵琶湖', detail: 'JR 三宫 ➡️ 京都 (换乘湖西线) ➡️ 志贺站。约 90 分钟。', icon: 'train', type: 'transport' },
+        { time: '08:30', task: 'Plan A: 琵琶湖', detail: 'JR 三宫 ➡️ 京都 (换乘湖西线) ➡️ 志贺站。约 90 分钟。', icon: 'train', type: 'transport' },
         { time: '10:10', task: '接驳巴士 & 缆车', detail: '志贺站 68路巴士 ➡️ 缆车站。乘坐日本最快缆车直达海拔 1100米。', icon: 'bus', type: 'transport' },
         { time: '10:40', task: 'Biwako Terrace', detail: '先去 The Main 的 Grand Terrace。这里是拍摄“天空之镜”般琵琶湖全景的最佳机位。', icon: 'camera', type: 'spot' },
         { time: '12:00', task: 'Snow Land & 午餐', detail: '在 Snow Land 租雪盆滑雪。午餐推荐去“Lake View Dining”吃近江牛料理。', icon: 'snow', type: 'spot' },
@@ -333,6 +411,9 @@ const App = () => {
       case 'mountain-snow': return <CloudSnow size={size} />;
       case 'bath': return <Droplet size={size} />;
       case 'x': return <X size={size} />;
+      case 'phone': return <Smartphone size={size} />;
+      case 'bag': return <ShoppingBag size={size} />;
+      case 'briefcase': return <Briefcase size={size} />;
       default: return <Clock size={size} />;
     }
   };
@@ -356,19 +437,20 @@ const App = () => {
       
       {/* 1. Header: View Toggle */}
       <div className="bg-white pt-6 pb-2 px-4 sticky top-0 z-30 border-b border-stone-100/50 backdrop-blur-md bg-white/95">
-        <div className="flex justify-between bg-slate-100 p-1 rounded-xl mb-4 overflow-x-auto">
-          {['itinerary', 'guides', 'shopping', 'food', 'stress'].map((tab) => (
+        <div className="flex justify-between bg-slate-100 p-1 rounded-xl mb-4 overflow-x-auto gap-1">
+          {['itinerary', 'guides', 'shopping', 'food', 'stress', 'packing'].map((tab) => (
              <button 
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-2 px-3 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
-                activeTab === tab ? 'bg-white shadow-sm text-slate-900' : 'text-slate-400'
+                activeTab === tab ? 'bg-white shadow-sm text-slate-900 ring-1 ring-black/5' : 'text-slate-400'
               }`}
             >
               {tab === 'itinerary' ? '行程' : 
                tab === 'guides' ? '交通' : 
                tab === 'shopping' ? '购物' : 
-               tab === 'food' ? '美食' : '诊断'}
+               tab === 'food' ? '美食' : 
+               tab === 'stress' ? '诊断' : '清单'}
             </button>
           ))}
         </div>
@@ -610,6 +692,60 @@ const App = () => {
                      </div>
                   </div>
                </div>
+            ))}
+             <div className="flex justify-center pt-6 pb-10 opacity-30">
+               <div className="h-1 w-16 bg-slate-300 rounded-full" />
+            </div>
+          </div>
+        )}
+
+        {/* Packing List View (New) */}
+        {activeTab === 'packing' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-lg mb-6">
+               <h2 className="text-xl font-bold flex items-center gap-2 mb-2">
+                 <ClipboardList size={20} className="text-white"/>
+                 行前准备清单
+               </h2>
+               <p className="text-sm opacity-90">2月关西风大，特别是去琵琶湖和姬路城，保暖防风是关键！</p>
+            </div>
+
+            {packingItems.map((category) => (
+              <div key={category.category} className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className={`${category.color} p-4 text-white flex items-center gap-3`}>
+                   <div className="bg-white/20 p-2 rounded-lg">
+                      {getIcon(category.icon)}
+                   </div>
+                   <h3 className="font-bold text-lg">{category.category}</h3>
+                </div>
+                <div className="divide-y divide-slate-100">
+                  {category.items.map((item) => (
+                    <div 
+                      key={item.id} 
+                      onClick={() => toggleItem(category.category, item.id)}
+                      className="p-4 flex items-center gap-4 hover:bg-slate-50 cursor-pointer transition-colors"
+                    >
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                        item.checked 
+                        ? 'bg-emerald-500 border-emerald-500 text-white' 
+                        : 'border-slate-300 text-transparent'
+                      }`}>
+                        <CheckCircle size={14} fill="currentColor" className={item.checked ? "opacity-100" : "opacity-0"} />
+                      </div>
+                      <div className="flex-1">
+                        <span className={`text-sm font-medium transition-all ${
+                          item.checked ? 'text-slate-400 line-through' : 'text-slate-700'
+                        }`}>
+                          {item.name}
+                        </span>
+                        {item.important && !item.checked && (
+                          <span className="ml-2 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold uppercase">必带</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
              <div className="flex justify-center pt-6 pb-10 opacity-30">
                <div className="h-1 w-16 bg-slate-300 rounded-full" />
