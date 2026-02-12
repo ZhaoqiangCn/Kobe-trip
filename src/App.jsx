@@ -104,7 +104,7 @@ const App = () => {
         { time: '15:40', task: '抵达关西机场', detail: 'T1 入境。看一眼 JR 柜台，如果排长队直接放弃，去坐大巴！(您今天不用 JR)。', icon: 'info', type: 'default' },
         { time: '17:00', task: '机场巴士', detail: 'T1 1楼 6号站台。直达神户三宫 (约70分钟)。不建议坐 JR (需换乘且人多)。', icon: 'bus', type: 'transport' },
         { time: '18:30', task: 'Mint Kobe', detail: '在三宫下车。1. 先买18号有马巴士票。2. 去 JR 三宫站兑换 JR Pass (无需排队)。', icon: 'ticket', type: 'alert' },
-        { time: '20:00', task: '晚餐', detail: '三宫 Center 街寻找神户拉面或居酒屋。', icon: 'food', type: 'food' },
+        { time: '20:00', task: '晚餐', detail: '三宫 Center 街寻找神户拉面（一连）。', icon: 'food', type: 'food' },
         { time: '21:30', task: '堂吉诃德', detail: '24小时营业。买水、零食、休足时间(贴腿用)。', icon: 'shopping', type: 'spot' }
       ]
     },
@@ -128,18 +128,20 @@ const App = () => {
     },
     {
       date: '17', month: '2月', weekday: '周二',
-      title: '琵琶湖山谷',
-      location: 'Shiga',
+      title: '琵琶湖 · 梅田购物',
+      location: 'Shiga & Osaka',
       color: 'bg-sky-600',
       timeline: [
-        { time: '08:30', task: 'Plan A: 琵琶湖', detail: 'JR 三宫 ➡️ 京都 (换乘湖西线) ➡️ 志贺站。约 90 分钟。', icon: 'train', type: 'transport' },
+        { time: '08:30', task: '琵琶湖', detail: 'JR 三宫 ➡️ 京都 (换乘湖西线) ➡️ 志贺站。约 90 分钟。', icon: 'train', type: 'transport' },
         { time: '10:10', task: '接驳巴士 & 缆车', detail: '志贺站 68路巴士 ➡️ 缆车站。乘坐日本最快缆车直达海拔 1100米。', icon: 'bus', type: 'transport' },
         { time: '10:40', task: 'Biwako Terrace', detail: '先去 The Main 的 Grand Terrace。这里是拍摄“天空之镜”般琵琶湖全景的最佳机位。', icon: 'camera', type: 'spot' },
         { time: '12:00', task: 'Snow Land & 午餐', detail: '在 Snow Land 租雪盆滑雪。午餐推荐去“Lake View Dining”吃近江牛料理。', icon: 'snow', type: 'spot' },
-        { time: '14:00', task: 'Cafe 360', detail: '从缆车山顶站（打见山）出来，步行前往 Horai Pair Lift 搭乘口，乘坐吊椅前往最高的蓬莱山顶。Cafe 360位于山顶一侧。', icon: 'coffee', type: 'spot' },
-        { time: '17:30', task: '百货购物 (三宫)', detail: '回到三宫。Bshop, BEAMS, 3COINS (20:00关)。', icon: 'shopping', type: 'spot' },
-        { time: '19:30', task: '晚餐', detail: '长田炒面饭 (B级美食)。', icon: 'food', type: 'food' },
-        { time: '21:00', task: '超市补货', detail: 'Hankyu Oasis 买调料/水果。', icon: 'shopping', type: 'spot' }
+        { time: '14:00', task: 'Cafe 360', detail: '从缆车山顶站（打见山）出来，步行前往 Horai Pair Lift 搭乘口，乘坐吊椅前往最高的蓬莱山顶。', icon: 'coffee', type: 'spot' },
+        { time: '15:00', task: '下山前往大阪', detail: '缆车下山，转接驳车至志贺站。搭乘 JR 湖西线至京都，同站换乘 JR 京都线至大阪站（全程约1.5小时）。', icon: 'train', type: 'transport' },
+        { time: '16:30', task: '阪急百货 (梅田)', detail: '直奔梅田阪急购买化妆品。由于退税柜台（免税Counter）通常人比较多，建议早点去排队。商场 20:00 关门。', icon: 'shopping', type: 'alert' },
+        { time: '18:30', task: '梅田晚餐', detail: '推荐在阪急百货楼上的美食街（12-13F），或旁边的 Lucua / Grand Front 找一家特色餐厅就餐。', icon: 'food', type: 'food' },
+        { time: '20:30', task: '返回神户', detail: '吃饱喝足后，在 JR 大阪站搭乘「新快速」列车前往 JR 三宫站（仅需 21 分钟，非常快）。', icon: 'train', type: 'transport' },
+        { time: '21:00', task: '便利店/超市补货', detail: '回到神户，顺路在三宫站附近的 Hankyu Oasis 或便利店买点第二天的水和零食。', icon: 'shopping', type: 'spot' }
       ]
     },
     {
@@ -155,7 +157,7 @@ const App = () => {
         { time: '16:00', task: '提早退房', detail: '请案内所帮忙打 078-904-0181 叫接驳车送至巴士站。', icon: 'bus', type: 'transport' },
         { time: '17:00', task: '返回三宫', detail: '回到市区。', icon: 'map', type: 'default' },
         { time: '17:30', task: '查漏补缺', detail: '在三宫补齐未买的物品。', icon: 'shopping', type: 'default' },
-        { time: '19:30', task: '晚餐', detail: 'Mori Mori 回转寿司或居酒屋。', icon: 'food', type: 'food' }
+        { time: '19:30', task: '晚餐', detail: '神戸牛焼肉 にくなべ屋 神戸びいどろ 本店 / 八座和 本店', icon: 'food', type: 'food' }
       ]
     },
     {
